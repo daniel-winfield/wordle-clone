@@ -7,11 +7,6 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'wordle';
-
-  // canShare = navigator.canShare({
-  //   title: 'Dans Wordle',
-  //   text: 'text',
-  // });
   canShare = true;
 
   words = [
@@ -1362,7 +1357,6 @@ export class AppComponent {
   }
 
   validateEntry(entry: string) {
-    debugger;
     let wordChars = [];
     let result: ValidationResult[] = [];
 
@@ -1420,7 +1414,7 @@ export class AppComponent {
   }
 
   share() {
-    var text = '';
+    var text = 'https://danielwinfield.uk/wordle-clone/\n';
     this.resultsMatrix.forEach((row) => {
       row.forEach((col) => {
         if (col.isInCorrectPosition) {
