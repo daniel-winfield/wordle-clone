@@ -1,0 +1,23 @@
+td {
+  color: white;
+  background-color: grey;
+  padding: 5px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+}
+
+.correctChar {
+  background-color: yellow;
+}
+
+.correctPos {
+  background-color: green;
+}
+
+/* table, */
+th,
+td {
+  border: 2px solid black;
+  border-collapse: collapse;
+}

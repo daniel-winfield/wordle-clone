@@ -1,0 +1,28 @@
+<table>
+  <tbody>
+    <tr *ngFor="let row of resultsMatrix">
+      <td
+        *ngFor="let col of row"
+        [class.correctChar]="col.isInString"
+        [class.correctPos]="col.isInCorrectPosition"
+      >
+        {{ col.char.toUpperCase() }}
+      </td>
+    </tr>
+    <tr *ngFor="let row of [].constructor(maxAttempts - resultsMatrix.length)">
+      <td *ngFor="let col of [].constructor(word.length)"></td>
+    </tr>
+    <!-- <tr>
+      <td *ngFor="let col of [].constructor(word.length)"></td>
+      <td><button>Go</button></td>
+    </tr> -->
+  </tbody>
+</table>
+<input
+  #textField
+  type="text"
+  [attr.minlength]="word.length"
+  [attr.maxlength]="word.length"
+/>
+<button (click)="addToResultsMatrix(textField.value)">Submit</button>
+<button *ngIf="canShare" (click)="share()">Share</button>
