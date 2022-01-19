@@ -1404,6 +1404,10 @@ export class AppComponent {
       return;
     }
 
+    if (this.resultsMatrix.length >= this.maxAttempts) {
+      return;
+    }
+
     var result = this.validateEntry(entry);
 
     this.resultsMatrix.push(result);
