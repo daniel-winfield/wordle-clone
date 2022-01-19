@@ -26,3 +26,4 @@
 />
 <button (click)="addToResultsMatrix(textField.value)">Submit</button>
 <button *ngIf="canShare" (click)="share()">Share</button>
+<div *ngIf="resultsMatrix.length >= maxAttempts">{{ word }}</div>

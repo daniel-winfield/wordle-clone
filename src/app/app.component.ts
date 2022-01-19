@@ -1360,18 +1360,14 @@ export class AppComponent {
     let wordChars = [];
     let result: ValidationResult[] = [];
 
-    // Setup word chars
     for (var i = 0; i < this.word.length; i++) {
+      // Setup word chars
       wordChars.push({ char: this.word[i], isUsed: false });
-    }
 
-    // Setup result arr
-    for (var i = 0; i < entry.length; i++) {
+      // Setup result arr
       result.push(new ValidationResult(entry[i]));
-    }
 
-    // Check chars for correct position
-    for (var i = 0; i < result.length; i++) {
+      // Check chars for correct position
       if (wordChars[i].char === result[i].char) {
         result[i].isInString = true;
         result[i].isInCorrectPosition = true;
