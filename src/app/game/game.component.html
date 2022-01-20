@@ -22,7 +22,6 @@
         <td
           *ngFor="let col of [].constructor(word.length - textEntry.length)"
         ></td>
-        <!-- <td><button>Go</button></td> -->
       </tr>
     </tbody>
   </table>
@@ -33,7 +32,17 @@
     [attr.minlength]="word.length"
     [attr.maxlength]="word.length"
   /> -->
-  <button (click)="addToResultsMatrix(textEntry)">Submit</button>
+  <!-- <button (click)="addToResultsMatrix(textEntry)">Submit</button> -->
   <button *ngIf="canShare" (click)="share()">Share</button>
   <div *ngIf="resultsMatrix.length >= maxAttempts">{{ word }}</div>
+
+  <div class="keyboardRow" *ngFor="let row of chars">
+    <div class="keyboardKey" (click)="addChar(c)" *ngFor="let c of row">
+      {{ c.toUpperCase() }}
+    </div>
+  </div>
+  <div class="keyboardRow">
+    <div class="keyboardKey" (click)="removeChar()">Backspace</div>
+    <div class="keyboardKey" (click)="addToResultsMatrix(textEntry)">Enter</div>
+  </div>
 </div>
