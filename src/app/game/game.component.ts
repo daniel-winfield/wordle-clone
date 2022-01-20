@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-game',
@@ -6,7 +6,37 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./game.component.css'],
 })
 export class GameComponent implements OnInit {
+  @HostListener('document:keypress', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    debugger;
+    // let matchingChar;
+
+    this.chars.forEach((row) =>
+      row.forEach((char) => {
+        if (event.key.toLowerCase() === char) {
+          this.addChar(char);
+        }
+      })
+    );
+
+    if (event.key === 'Enter') {
+      this.addToResultsMatrix(this.textEntry);
+    }
+    // this.key = event.key;
+  }
+
+  @HostListener('document:keydown.backspace', ['$event'])
+  handleBackspaceEvent(event: any) {
+    this.removeChar();
+  }
+
   ngOnInit(): void {}
+
+  chars = [
+    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
+    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
+    ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
+  ];
 
   canShare = true;
 
@@ -1344,8 +1374,9 @@ export class GameComponent implements OnInit {
 
   word: string = '';
   resultsMatrix: ValidationResult[][] = [];
+
   textEntry: string = '';
-  textEntryArr: string[] = this.textEntry.split(/[ ]+/);
+  // textEntryArr: string[] = this.textEntry.split(/[ ]+/);
 
   maxAttempts = 4;
 
@@ -1357,6 +1388,18 @@ export class GameComponent implements OnInit {
     this.word = filteredWords[this.getRandomInt(filteredWords.length)];
 
     this.maxAttempts = this.word.length + 1;
+  }
+
+  addChar(char: string) {
+    if (this.textEntry.length < this.word.length) {
+      this.textEntry += char;
+    }
+  }
+
+  removeChar() {
+    if (this.textEntry.length > 0) {
+      this.textEntry = this.textEntry.slice(0, -1);
+    }
   }
 
   validateEntry(entry: string) {
@@ -1414,6 +1457,8 @@ export class GameComponent implements OnInit {
     var result = this.validateEntry(entry);
 
     this.resultsMatrix.push(result);
+    this.textEntry = '';
+    // this.textEntryArr = [];
   }
 
   share() {
@@ -1436,6 +1481,14 @@ export class GameComponent implements OnInit {
       text: text,
     });
   }
+
+  // onKeypressEvent(event: any) {
+  //   // debugger;
+  //   // event.target.value;
+
+  //   this.textEntry = event.target.value;
+  //   // this.textEntryArr = this.textEntry.split('');
+  // }
 }
 
 export class ValidationResult {

@@ -15,19 +15,25 @@
       >
         <td *ngFor="let col of [].constructor(word.length)"></td>
       </tr>
-      <!-- <tr>
-          <td *ngFor="let col of [].constructor(word.length)"></td>
-          <td><button>Go</button></td>
-        </tr> -->
+      <tr>
+        <td *ngFor="let col of [].constructor(textEntry.length); let i = index">
+          {{ textEntry[i].toUpperCase() }}
+        </td>
+        <td
+          *ngFor="let col of [].constructor(word.length - textEntry.length)"
+        ></td>
+        <!-- <td><button>Go</button></td> -->
+      </tr>
     </tbody>
   </table>
-  <input
-    #textField
+  <!-- <input
+    (value)="(textEntry)"
+    (keyup)="onKeypressEvent($event)"
     type="text"
     [attr.minlength]="word.length"
     [attr.maxlength]="word.length"
-  />
-  <button (click)="addToResultsMatrix(textField.value)">Submit</button>
+  /> -->
+  <button (click)="addToResultsMatrix(textEntry)">Submit</button>
   <button *ngIf="canShare" (click)="share()">Share</button>
   <div *ngIf="resultsMatrix.length >= maxAttempts">{{ word }}</div>
 </div>
