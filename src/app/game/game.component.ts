@@ -1,5 +1,4 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-// import { words } from 'popular-english-words';
 
 @Component({
   selector: 'app-game',
@@ -9,13 +8,10 @@ import { Component, OnInit, HostListener } from '@angular/core';
 export class GameComponent implements OnInit {
   @HostListener('document:keypress', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-    debugger;
-    // let matchingChar;
-
     this.chars.forEach((row) =>
       row.forEach((char) => {
-        if (event.key.toLowerCase() === char) {
-          this.addChar(char);
+        if (event.key.toLowerCase() === char.char) {
+          this.addChar(char.char);
         }
       })
     );
@@ -23,7 +19,6 @@ export class GameComponent implements OnInit {
     if (event.key === 'Enter') {
       this.addToResultsMatrix(this.textEntry);
     }
-    // this.key = event.key;
   }
 
   @HostListener('document:keydown.backspace', ['$event'])
@@ -33,11 +28,7 @@ export class GameComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  chars = [
-    ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'],
-    ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'],
-    ['z', 'x', 'c', 'v', 'b', 'n', 'm'],
-  ];
+  chars: ValidationResult[][] = [];
 
   canShare = true;
 
@@ -9795,14 +9786,13 @@ export class GameComponent implements OnInit {
     'temps',
     'widest',
     'clich',
-    'madam'
+    'madam',
   ];
 
   word: string = '';
   resultsMatrix: ValidationResult[][] = [];
 
   textEntry: string = '';
-  // textEntryArr: string[] = this.textEntry.split(/[ ]+/);
 
   maxAttempts = 4;
 
@@ -9814,6 +9804,17 @@ export class GameComponent implements OnInit {
     this.word = filteredWords[this.getRandomInt(filteredWords.length)];
 
     this.maxAttempts = this.word.length + 1;
+
+    let rowOne = this.setupKeyboardRow('qwertyuiop');
+    let rowTwo = this.setupKeyboardRow('asdfghjkl');
+    let rowThree = this.setupKeyboardRow('zxcvbnm');
+    this.chars.push(rowOne);
+    this.chars.push(rowTwo);
+    this.chars.push(rowThree);
+  }
+
+  private setupKeyboardRow(chars: string) {
+    return chars.split('').map((char) => new ValidationResult(char));
   }
 
   addChar(char: string) {
@@ -9841,10 +9842,17 @@ export class GameComponent implements OnInit {
 
       // Check chars for correct position
       if (wordChars[i].char === result[i].char) {
-        result[i].isInString = true;
-        result[i].isInCorrectPosition = true;
+        result[i].setIsInCorrectPosition();
 
         wordChars[i].isUsed = true;
+
+        this.chars.forEach((row) => {
+          let matchingKey = row.find((c) => c.char === result[i].char);
+
+          if (matchingKey !== undefined) {
+            matchingKey.setIsInCorrectPosition();
+          }
+        });
       }
     }
 
@@ -9856,11 +9864,31 @@ export class GameComponent implements OnInit {
             result[j].isInString === false &&
             result[j].char === wordChars[i].char
           ) {
-            result[j].isInString = true;
+            result[j].setIsInString();
             wordChars[i].isUsed = true;
+            this.chars.forEach((row) => {
+              let matchingKey = row.find((c) => c.char === result[j].char);
+
+              if (matchingKey !== undefined) {
+                matchingKey.setIsInString();
+              }
+            });
             break;
           }
         }
+      }
+    }
+
+    // Mark incorrect letters on keyboard
+    for (let i = 0; i < result.length; i++) {
+      if (!result[i].isInString) {
+        this.chars.forEach((row) => {
+          let matchingKey = row.find((c) => c.char === result[i].char);
+
+          if (matchingKey !== undefined) {
+            matchingKey.setNotInString();
+          }
+        });
       }
     }
 
@@ -9883,8 +9911,11 @@ export class GameComponent implements OnInit {
     var result = this.validateEntry(entry);
 
     this.resultsMatrix.push(result);
+    this.clearTextEntry();
+  }
+
+  private clearTextEntry() {
     this.textEntry = '';
-    // this.textEntryArr = [];
   }
 
   share() {
@@ -9907,24 +9938,31 @@ export class GameComponent implements OnInit {
       text: text,
     });
   }
-
-  // onKeypressEvent(event: any) {
-  //   // debugger;
-  //   // event.target.value;
-
-  //   this.textEntry = event.target.value;
-  //   // this.textEntryArr = this.textEntry.split('');
-  // }
 }
 
 export class ValidationResult {
   public char: string;
   public isInString: boolean;
   public isInCorrectPosition: boolean;
+  public isNotInString: boolean;
 
   constructor(char: string) {
     this.char = char;
     this.isInCorrectPosition = false;
     this.isInString = false;
+    this.isNotInString = false;
+  }
+
+  setIsInString() {
+    this.isInString = true;
+  }
+
+  setIsInCorrectPosition() {
+    this.isInCorrectPosition = true;
+    this.isInString = true;
+  }
+
+  setNotInString() {
+    this.isNotInString = true;
   }
 }

@@ -7,19 +7,8 @@ td {
   text-align: center;
 }
 
-.correctChar {
-  background-color: #fcd0ba;
-}
-
-.correctPos {
-  background-color: #8fb9a8;
-  color: #fefad4;
-}
-
-/* table, */
 th,
 td {
-  /* border: 2px solid black; */
   border-collapse: collapse;
 }
 
@@ -42,4 +31,18 @@ table {
   margin: 2px;
   padding-right: 5px;
   padding-left: 5px;
+}
+
+.correctChar {
+  background-color: #fcd0ba;
+}
+
+.correctPos {
+  background-color: #8fb9a8;
+  color: #fefad4;
+}
+
+.incorrectChar {
+  background-color: white;
+  color: grey;
 }

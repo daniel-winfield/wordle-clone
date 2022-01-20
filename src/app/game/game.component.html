@@ -25,20 +25,19 @@
       </tr>
     </tbody>
   </table>
-  <!-- <input
-    (value)="(textEntry)"
-    (keyup)="onKeypressEvent($event)"
-    type="text"
-    [attr.minlength]="word.length"
-    [attr.maxlength]="word.length"
-  /> -->
-  <!-- <button (click)="addToResultsMatrix(textEntry)">Submit</button> -->
   <button *ngIf="canShare" (click)="share()">Share</button>
   <div *ngIf="resultsMatrix.length >= maxAttempts">{{ word }}</div>
 
   <div class="keyboardRow" *ngFor="let row of chars">
-    <div class="keyboardKey" (click)="addChar(c)" *ngFor="let c of row">
-      {{ c.toUpperCase() }}
+    <div
+      class="keyboardKey"
+      (click)="addChar(c.char)"
+      *ngFor="let c of row"
+      [class.correctChar]="c.isInString"
+      [class.correctPos]="c.isInCorrectPosition"
+      [class.incorrectChar]="c.isNotInString"
+    >
+      {{ c.char.toUpperCase() }}
     </div>
   </div>
   <div class="keyboardRow">
