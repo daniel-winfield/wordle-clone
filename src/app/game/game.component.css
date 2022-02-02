@@ -28,9 +28,10 @@ table {
   background-color: #fefad4;
   padding: 4px;
   border-radius: 5px;
-  margin: 2px;
+  margin: 3px;
   padding-right: 5px;
   padding-left: 5px;
+  font-size: 1.3em;
 }
 
 .correctChar {
